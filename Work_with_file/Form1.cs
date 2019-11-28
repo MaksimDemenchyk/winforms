@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,10 +16,11 @@ namespace Work_with_file
         public Form1()
         {
             InitializeComponent();
-
+            // открытие в центре экрана
+            this.StartPosition = FormStartPosition.CenterScreen;
             button1.Click += button1_Click;
             button2.Click += button2_Click;
-            openFileDialog2.Filter = "Text files(*.txt)|*.txt|All files(*.*)|*.*";
+            
             saveFileDialog2.Filter = "Text files(*.txt)|*.txt|All files(*.*)|*.*";
         }
         // сохранение файла
@@ -35,19 +37,64 @@ namespace Work_with_file
         // открытие файла
         void button1_Click(object sender, EventArgs e)
         {
-            if (openFileDialog2.ShowDialog() == DialogResult.Cancel)
-                return;
-            // получаем выбранный файл
-            string filename = openFileDialog2.FileName;
-            // читаем файл в строку
-            string fileText = System.IO.File.ReadAllText(filename);
-            textBox1.Text = fileText;
-            MessageBox.Show("Файл открыт");
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Text files(*.txt)|*.txt|All files(*.*)|*.*";
+               
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    {
+                        progressBar1.Maximum = 100;
+                        for (int i = 100; i > 0; i--)
+                        {
+                            progressBar1.Visible = true;
+                            progressBar1.Value = progressBar1.Maximum - i;
+                            System.Threading.Thread.Sleep(60);
+                            if (i == 1)
+                                progressBar1.Visible = false;
+                        }
+                        //читаем файл в строку
+                        var fileStream = openFileDialog.OpenFile();
+
+                        using (TextReader reader = new StreamReader(fileStream))
+                        {
+                            textBox1.Text = reader.ReadToEnd();
+                        }
+                        //string fileText = System.IO.File.ReadAllText(filename);
+                        //textBox1.Text = fileText;
+                        MessageBox.Show("Файл открыт");
+                    }
+                }
+            
+
+                // получаем выбранный файл
+                // string filename = openFileDialog2.FileName;
+
+                
+                    
+            }
+                
+
+
         }
 
         private void openFileDialog2_FileOk(object sender, CancelEventArgs e)
         {
+          
+        }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Вы действительно желаете выйти?", "Выход", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                this.Close();
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                
+            }
         }
     }
 }
