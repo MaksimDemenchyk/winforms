@@ -18,8 +18,8 @@ namespace Work_with_file
             InitializeComponent();
             // открытие в центре экрана
             this.StartPosition = FormStartPosition.CenterScreen;
-            button1.Click += button1_Click;
-            button2.Click += button2_Click;
+            //button1.Click += button1_Click;
+            // button2.Click += button2_Click;
             
             saveFileDialog2.Filter = "Text files(*.txt)|*.txt|All files(*.*)|*.*";
         }
@@ -50,7 +50,7 @@ namespace Work_with_file
                         {
                             progressBar1.Visible = true;
                             progressBar1.Value = progressBar1.Maximum - i;
-                            System.Threading.Thread.Sleep(60);
+                            System.Threading.Thread.Sleep(10);
                             if (i == 1)
                                 progressBar1.Visible = false;
                         }
@@ -63,6 +63,7 @@ namespace Work_with_file
                         }
                         //string fileText = System.IO.File.ReadAllText(filename);
                         //textBox1.Text = fileText;
+
                         MessageBox.Show("Файл открыт");
                     }
                 }
@@ -70,9 +71,6 @@ namespace Work_with_file
 
                 // получаем выбранный файл
                 // string filename = openFileDialog2.FileName;
-
-                
-                    
             }
                 
 
